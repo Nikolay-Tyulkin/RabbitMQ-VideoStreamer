@@ -33,10 +33,10 @@ class Broker:
 
         self.channel.queue_bind(exchange=self.exchange, queue=queue_name)
 
-        print(' [*] Waiting for logs. To exit press CTRL+C')
+        #print(' [*] Waiting for logs. To exit press CTRL+C')
 
         def callback(ch, method, properties, body):
-            print(" [x] image has been recieved")
+            #print(" [x] image has been recieved")
             image = base64.b64decode(body)
             image = np.frombuffer(image, np.uint8)
             image = cv2.imdecode(image, cv2.IMREAD_COLOR)
@@ -49,6 +49,9 @@ class Broker:
     def getImage(self):
         image = self.imageBuffer
         print(image.shape)
+        ret, jpeg = cv2.imencode('.jpg', image)
+        return jpeg.tobytes()
+        #print(image.shape)
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
     
