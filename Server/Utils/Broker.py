@@ -35,7 +35,7 @@ class Broker:
 
         print(' [*] Waiting for logs. To exit press CTRL+C')
 
-        def callback(self, ch, method, properties, body):
+        def callback(ch, method, properties, body):
             print(" [x] image has been recieved")
             image = base64.b64decode(body)
             image = np.frombuffer(image, np.uint8)
@@ -48,8 +48,9 @@ class Broker:
 
     def getImage(self):
         image = self.imageBuffer
-        self.imageBuffer = None
-        return image
+        print(image.shape)
+        ret, jpeg = cv2.imencode('.jpg', image)
+        return jpeg.tobytes()
     
 
         
