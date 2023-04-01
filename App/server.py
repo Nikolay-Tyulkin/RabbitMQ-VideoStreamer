@@ -7,7 +7,6 @@ from flask import request
 app = Flask(__name__)
 videoBroker = VideoBroker()
 videoBroker.startRecieving()
-textBroker = TextBroker()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -18,9 +17,13 @@ def index():
             #Get text from textarea name="textToSound"
             text = request.form.get('text')
             print(text)
+            textBroker = TextBroker()
             textBroker.sendText(text)
+            textBroker.close()
+            #Clear text from textarea
+            
             #Send text to broker
-    return render_template('index.html')
+    return render_template('index.html', text='')
 
 def gen(videoBroker):
     while True:
