@@ -1,6 +1,5 @@
 # import the necessary packages
 from flask import Flask, render_template, Response
-from camera import VideoCamera
 from Utils.VideoBroker import VideoBroker
 from flask import request
 

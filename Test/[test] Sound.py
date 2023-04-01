@@ -10,7 +10,7 @@ from gtts import gTTS
 text_val = "текст для перевода в аудио"
  
 # Here are converting in English Language 
-language = 'af' 
+language = 'ru' 
  
 # Passing the text and language to the engine, 
 # here we have assign slow=False. Which denotes 
