@@ -6,11 +6,7 @@ import numpy as np
 import base64
 import time
 
-image = cv2.imread(r'./Client/1L.jpg')
-print(image.shape)
-image = cv2.resize(image, (480, 680))
-image = cv2.imencode('.jpg', image)[1]
-image = base64.b64encode(image)
+
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host="84.201.143.216"))
 channel = connection.channel()
@@ -18,10 +14,11 @@ channel = connection.channel()
 channel.exchange_declare(exchange='video-streamer', exchange_type='fanout')
 
 cap = cv2.VideoCapture(0)
-
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 while True:
     ret, frame = cap.read()
-    frame = cv2.resize(frame, (240, 160))
+    frame = cv2.resize(frame, (100, 100))
     frame = cv2.imencode('.jpg', frame)[1]
     frame = base64.b64encode(frame)
     message = frame
