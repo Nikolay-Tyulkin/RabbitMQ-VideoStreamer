@@ -4,7 +4,7 @@ import numpy as np
 import base64
 import threading 
 
-class Broker:
+class VideoBroker:
     def __init__(self, host="84.201.143.216", exchange="video-streamer", exchange_type="fanout"):
         self.host = host
         self.exchange = exchange
@@ -14,11 +14,6 @@ class Broker:
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange=self.exchange, exchange_type=self.exchange_type)
         self.imageBuffer = None
-
-    def sendImage(self, image):
-        image = cv2.imencode('.jpg', image)[1]
-        image = base64.b64encode(image)
-        self.channel.basic_publish(exchange=self.exchange, routing_key='', body=image)
 
     def close(self):
         self.connection.close()
@@ -48,12 +43,9 @@ class Broker:
 
     def getImage(self):
         image = self.imageBuffer
-        print(image.shape)
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
-        #print(image.shape)
-        ret, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+
     
 
         
