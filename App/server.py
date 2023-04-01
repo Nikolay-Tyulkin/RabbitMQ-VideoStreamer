@@ -1,11 +1,14 @@
 # import the necessary packages
 from flask import Flask, render_template, Response
 from Utils.VideoBroker import VideoBroker
+from Utils.TextBroker import TextBroker
 from flask import request
 
 app = Flask(__name__)
 videoBroker = VideoBroker()
 videoBroker.startRecieving()
+textBroker = TextBroker()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -15,6 +18,7 @@ def index():
             #Get text from textarea name="textToSound"
             text = request.form.get('text')
             print(text)
+            textBroker.sendText(text)
             #Send text to broker
     return render_template('index.html')
 
