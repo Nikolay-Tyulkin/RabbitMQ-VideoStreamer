@@ -45,6 +45,15 @@ class VideoBroker:
         image = self.imageBuffer
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
+    
+    def sendImage(self, image):
+        image = cv2.imencode('.jpg', image)[1]
+        image = base64.b64encode(image)
+        message = image
+
+        self.channel.basic_publish(exchange=self.exchange, routing_key='', body=message)
+        #print(" [x] Sent Done!" )
+        
 
     
 
