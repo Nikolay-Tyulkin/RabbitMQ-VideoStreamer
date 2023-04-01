@@ -38,3 +38,8 @@ class TextBroker:
         self.channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 
         self.channel.start_consuming()
+
+    def sendText(self, text):
+        text = text.encode("utf-8")
+        self.channel.basic_publish(exchange=self.exchange, routing_key='', body=text)
+        
