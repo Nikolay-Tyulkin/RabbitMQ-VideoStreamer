@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import base64
 import threading 
+from Utils.Sound import Sound
+
 
 class TextBroker:
     def __init__(self, host="84.201.143.216", exchange="video-streamer-text", exchange_type="fanout"):
@@ -33,7 +35,12 @@ class TextBroker:
         def callback(ch, method, properties, body):
             text = body.decode("utf-8")
             self.textBuffer = text
+            if text == "":
+                return
             print(text)
+            sound = Sound()
+            sound.playSound(text)
+            self.textBuffer = None
 
         self.channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 
